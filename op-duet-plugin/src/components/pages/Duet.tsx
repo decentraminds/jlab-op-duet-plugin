@@ -3,12 +3,10 @@ import { ReactWidget } from '@jupyterlab/apputils';
 import React, { useState } from 'react';
 
 import Button from '@material-ui/core/Button';
-import AnimatedNumber from 'react-animated-number';
 
+import { Jutsu } from 'react-jutsu';
 
-function getRandomInt(max: number) {
-    return Math.floor(Math.random() * Math.floor(max));
-}
+declare var window: any;
 
 /**
  * React component for Duet Dashboard.
@@ -16,40 +14,33 @@ function getRandomInt(max: number) {
  * @returns The React component
  */
 const DuetComponent = (props: {animate: boolean}): JSX.Element => {
-  const [counter, setCounter] = useState(0);
-  const [increment, setIncrement] = useState(0);
+    const [room, setRoom] = useState('')
+    const [name, setName] = useState('')
+    const [call, setCall] = useState(false)
 
-  const doIncrement = () => {
-    const increment = getRandomInt(10000);
-    setIncrement(increment);
-    setCounter(counter + increment);
-  }
+    const handleCallClick = (event: any) => {
+        event.preventDefault()
+        if (room && name) setCall(true)
+    }
+
 
   return (
     <div>
         <h3>Duet Component</h3>
-        <div>
-            You earned{" "}
-            <AnimatedNumber
-            duration={increment / 10}
-            stepPrecision={0}
-            value={counter}
-            />
-        </div>
-        <button
-            onClick={() => { doIncrement() }}
-        >
-            Increment
-        </button>
-        <div>
-            <Button 
-            variant="contained" 
-            color="default" 
-            onClick={() => { doIncrement() }}
-            >
-            Increment
-            </Button>
-        </div>
+        {call ? (
+            <Jutsu
+                roomName={room}
+                userName={name}
+                loadingComponent={<p>loading ...</p>} />
+        ) : (
+            <form>
+                <input id='room' type='text' placeholder='Room' value={room} onChange={(e) => setRoom(e.target.value)} />
+                <input id='name' type='text' placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} />
+                <Button onClick={handleCallClick} type='submit'>
+                    Start Call / Join
+                </Button>
+            </form>
+        )}
     </div>
   );
 };
@@ -66,6 +57,11 @@ class DuetWidget extends ReactWidget {
     super();
     this.addClass('jp-React');
     this.animate = animate;
+
+    const script = window.document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://meet.jit.si/external_api.js';
+    window.document.body.appendChild(script);
   }
   protected render(): JSX.Element {
     return <DuetComponent 

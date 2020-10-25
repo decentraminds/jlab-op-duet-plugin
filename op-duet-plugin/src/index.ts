@@ -14,6 +14,8 @@ import AssetsPage from "./components/pages/Assets";
 import DuetPage from "./components/pages/Duet";
 import MarketplacePage from "./components/pages/Marketplace";
 
+declare var window: any;
+
 /**
  * The command IDs used by the extension.
  */
@@ -34,6 +36,11 @@ const extension: JupyterFrontEndPlugin<void> = {
     app: JupyterFrontEnd,
     palette: ICommandPalette,
     mainMenu: IMainMenu) => {
+
+    const script = window.document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://meet.jit.si/external_api.js';
+    window.document.body.appendChild(script);
 
     console.log('JupyterLab extension op-duet-plugin is activated!');
 

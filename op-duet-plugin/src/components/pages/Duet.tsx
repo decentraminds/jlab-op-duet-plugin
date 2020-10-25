@@ -6,7 +6,18 @@ import Button from '@material-ui/core/Button';
 
 import { Jutsu } from 'react-jutsu';
 
-declare var window: any;
+import Web3 from "web3";
+import Web3Modal, { IProviderOptions } from "web3modal";
+
+const providerOptions: IProviderOptions = {
+
+}
+
+const web3Modal = new Web3Modal({
+  network: "mainnet", // optional
+  cacheProvider: true, // optional
+  providerOptions // required
+});
 
 /**
  * React component for Duet Dashboard.
@@ -17,16 +28,35 @@ const DuetComponent = (props: {animate: boolean}): JSX.Element => {
     const [room, setRoom] = useState('')
     const [name, setName] = useState('')
     const [call, setCall] = useState(false)
+    const [provider, setProvider] = useState(null as any)
 
     const handleCallClick = (event: any) => {
         event.preventDefault()
         if (room && name) setCall(true)
     }
 
+    const connectWallet = async (event: any) => {
+        let newProvider = await web3Modal.connect();
+        console.log('web3 ==> ', new Web3(newProvider))
+        setProvider(newProvider);
+        newProvider.on("connect", (info: { chainId: number }) => {
+            console.log("onConnect", provider, info);
+        });
+    }
+
 
   return (
     <div>
         <h3>Duet Component</h3>
+        <div>
+            <Button 
+                variant="contained" 
+                color="default" 
+                onClick={connectWallet}
+            >
+            Connect Wallet
+            </Button>
+        </div>
         {call ? (
             <Jutsu
                 roomName={room}
@@ -57,11 +87,6 @@ class DuetWidget extends ReactWidget {
     super();
     this.addClass('jp-React');
     this.animate = animate;
-
-    const script = window.document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'https://meet.jit.si/external_api.js';
-    window.document.body.appendChild(script);
   }
   protected render(): JSX.Element {
     return <DuetComponent 

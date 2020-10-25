@@ -2,6 +2,6 @@
 
 Monorepo for a PoC using Jupyter Lab plugins
 
-# LICEANCE
+# LICENSE
 
 [MIT License](LICENSE)

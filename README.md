@@ -1,2 +1,7 @@
 # jlab-op-duet-plugin
-A PoC for a Jupyter Lab plugin
+
+Monorepo for a PoC using Jupyter Lab plugins
+
+# LICEANCE
+
+[MIT License](LICENSE)

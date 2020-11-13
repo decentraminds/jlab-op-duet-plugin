@@ -10,9 +10,9 @@ import { IMainMenu } from '@jupyterlab/mainmenu';
 
 import { Menu } from '@lumino/widgets';
 
-import AssetsPage from "./components/pages/Assets";
-import DuetPage from "./components/pages/Duet";
-import MarketplacePage from "./components/pages/Marketplace";
+import AssetsPage from "./pages/Assets";
+import DuetPage from "./pages/Duet";
+import MarketplacePage from "./pages/Marketplace";
 
 declare var window: any;
 

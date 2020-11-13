@@ -7,10 +7,17 @@ OP Duet Plugin
 
 ## Requirements
 
+* Conda
 * JupyterLab >= 1.0
 * Node >= 10.15.0
 
 ## Install
+
+```bash
+conda create -n <name> python=3.8
+conda activate <name>
+conda install -c conda-forge jupyterlab==2.2.8 jupyter_contrib_nbextensions -y
+```
 
 ```bash
 jupyter labextension install op-duet-plugin
@@ -36,7 +43,7 @@ jupyter labextension link .
 # Rebuild Typescript source after making changes
 jlpm build
 # Rebuild JupyterLab after making any changes
-jupyter lab build
+# jupyter lab build
 ```
 
 You can watch the source directory and run JupyterLab in watch mode to watch for changes in the extension's source and automatically rebuild the extension and application.
